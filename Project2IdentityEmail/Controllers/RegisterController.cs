@@ -29,8 +29,20 @@ namespace Project2IdentityEmail.Controllers
                 Surname = createUserRegisterDto.Surname,
                 UserName = createUserRegisterDto.Username
             };
-            await _userManager.CreateAsync(appUser, createUserRegisterDto.Password);
-            return RedirectToAction("UserList");
+            var result= await _userManager.CreateAsync(appUser, createUserRegisterDto.Password);
+            if(result.Succeeded)
+            {
+                return RedirectToAction("UserLogin","Login");
+            }
+            else
+            {
+                foreach(var item in result.Errors)
+                {
+                    ModelState.AddModelError("",item.Description);
+                }
+            }
+            return View();
+            
         }
     }
 }
