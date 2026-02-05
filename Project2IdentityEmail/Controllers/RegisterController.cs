@@ -22,14 +22,22 @@ namespace Project2IdentityEmail.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserRegisterDto createUserRegisterDto)
         {
+            Random rnd = new Random();
+            int x = rnd.Next(100000, 1000000);
             AppUser appUser = new AppUser()
             {
                 Name = createUserRegisterDto.Name,
                 Email = createUserRegisterDto.Email,
                 Surname = createUserRegisterDto.Surname,
-                UserName = createUserRegisterDto.Username
+                UserName = createUserRegisterDto.Username,
+                ConfirmCode = x.ToString()
             };
             var result= await _userManager.CreateAsync(appUser, createUserRegisterDto.Password);
+
+
+            //Email Gönderme Kodu
+
+
             if(result.Succeeded)
             {
                 return RedirectToAction("UserLogin","Login");

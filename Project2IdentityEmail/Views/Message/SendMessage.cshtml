@@ -1,0 +1,24 @@
+﻿@model Project2IdentityEmail.Entities.Message
+@{
+    Layout = null;
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container">
+    <br /><br />
+    <h3>Yeni Mesaj Gönderme Sayfası</h3>
+    <form method="post">
+        <label>Konu</label>
+        <input type="text" asp-for="Subject" class="form-control" />
+        <br />
+        <label>Alıcı Email</label>
+        <input type="text" asp-for="ReceiverEmail" class="form-control" />
+        <br />
+        <label>Mesaj</label>
+         <textarea class="form-control" asp-for="MessageDetail" rows="5"></textarea>
+         <br />
+         <button class="btn btn-primary">Mesajı Gönder</button>
+    </form>
+     
+</div>

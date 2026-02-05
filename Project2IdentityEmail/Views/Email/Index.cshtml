@@ -1,0 +1,17 @@
+﻿@model Project2IdentityEmail.Dtos.MailRequestDto
+
+@{
+    Layout = null;
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<form method="post">
+    <input type="text" asp-for="ReceiverEmail" placeholder="Alıcı Email" class="form-control" />
+    <br />
+    <input type="text" asp-for="Subject" placeholder="Konu" class="form-control" />
+    <br />
+    <input type="text" asp-for="MessageDetail" placeholder="Mesaj İçeriği" class="form-control" />
+    <br />
+    <button class="btn btn-info">Mail Gönder</button>
+</form>
