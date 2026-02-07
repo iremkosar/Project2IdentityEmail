@@ -1,0 +1,37 @@
+﻿<script src="~/mendy-admin/package/assets/libs/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="~/mendy-admin/package/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+<script src="~/mendy-admin/package/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- apps -->
+<script src="~/mendy-admin/package/dist/js/app.min.js"></script>
+<script src="~/mendy-admin/package/dist/js/app.init.js"></script>
+<script src="~/mendy-admin/package/dist/js/app-style-switcher.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="~/mendy-admin/package/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+<!--Wave Effects -->
+<script src="~/mendy-admin/package/dist/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="~/mendy-admin/package/dist/js/sidebarmenu.js"></script>
+<script src="~/mendy-admin/package/dist/js/feather.min.js"></script>
+<!--Custom JavaScript -->
+<script src="~/mendy-admin/package/dist/js/custom.min.js"></script>
+<!-- This Page JS -->
+<script src="~/mendy-admin/package/assets/libs/summernote/dist/summernote-bs4.min.js"></script>
+<script src="~/mendy-admin/package/assets/libs/dropzone/dist/min/dropzone.min.js"></script>
+<script>
+    $('#summernote').summernote({
+        placeholder: 'Type your email Here',
+        tabsize: 2,
+        height: 250
+    });
+    $("#dzid").dropzone({
+        url: "/file/post"
+    });
+</script>
+<style>
+    /* Sidebar kaldırıldıysa oluşan boşluk */
+    .page-wrapper {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+    }
+</style>

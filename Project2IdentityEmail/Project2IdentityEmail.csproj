@@ -27,4 +27,10 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\mendy-admin\.DS_Store" />
+    <None Include="wwwroot\mendy-admin\docs\.DS_Store" />
+    <None Include="wwwroot\mendy-admin\package\.DS_Store" />
+  </ItemGroup>
+
 </Project>

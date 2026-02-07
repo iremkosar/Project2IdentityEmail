@@ -2,28 +2,336 @@
 @{
     Layout = null;
 }
-<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-<form method="post">
-<div class="container">
-    <br />
-    <h3>Yeni Kullanıcı Kaydı</h3>
-    <label>Adınız</label>
-    <input type="text" asp-for="Name" class="form-control" />
-    <br />
-     <label>Soyadınız</label>
-    <input type="text" asp-for="Surname" class="form-control" />
-    <br />
-     <label>Kullanıcı Adınız</label>
-    <input type="text" asp-for="Username" class="form-control" />
-    <br />
-     <label>Email Adresiniz</label>
-    <input type="text" asp-for="Email" class="form-control" />
-    <br />
-    <label>Şifreniz</label>
-    <input type="text" required asp-for="Password" class="form-control" />
-    <br />
-    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-    <button class="btn btn-info">Kayıt Ol</button>
-</div>
-</form>
+<!DOCTYPE html>
+<html dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="~/mendy-admin/package/assets/images/favicon.png">
+    <title>Mendy Admin Template - The Ultimate Multipurpose admin template</title>
+
+    <link href="~/mendy-admin/package/dist/css/style.min.css" rel="stylesheet">
+
+    <style>
+        .auth-box {
+            border-radius: 20px !important;
+            overflow: hidden;
+            padding: 28px 26px;
+        }
+
+        .logo {
+            padding-top: 10px;
+            padding-bottom: 18px;
+        }
+
+        .form-control.form-control-lg {
+            height: 44px;
+            padding: 10px 14px;
+            font-size: 14px;
+            border-radius: 14px !important;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .form-row .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .custom-file-input ~ .custom-file-label {
+            height: 44px;
+            padding: 10px 14px;
+            border-radius: 14px !important;
+            line-height: 22px;
+            font-size: 14px;
+        }
+
+        .custom-file-label::after {
+            height: 44px;
+            line-height: 44px;
+            border-radius: 0 14px 14px 0 !important;
+        }
+
+        .btn.btn-lg {
+            border-radius: 14px !important;
+            padding: 10px 14px;
+            font-size: 15px;
+        }
+
+        .otp-input {
+            width: 48px;
+            height: 52px;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 14px;
+            border: 1px solid #d7d7d7;
+            outline: none;
+        }
+
+            .otp-input:focus {
+                border-color: #5f76e8;
+                box-shadow: 0 0 0 3px rgba(95,118,232,.15);
+            }
+    </style>
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <div class="preloader">
+            <div class="lds-ripple">
+                <div class="lds-pos"></div>
+                <div class="lds-pos"></div>
+            </div>
+        </div>
+
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center"
+             style="background:url('@Url.Content("~/mendy-admin/package/assets/images/big/auth-bg.jpg")') no-repeat center center;">
+
+            <div class="auth-box">
+                <div class="logo text-center">
+                    <span class="d-block mb-2">
+                        <img src="~/mendy-admin/package/assets/images/logo-icon.png" alt="logo" />
+                    </span>
+                    <h5 class="font-medium mb-0">Yeni Kullanıcı Kaydı</h5>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+
+                        <!-- ✅ REGISTER FORM -->
+                        <form class="form-horizontal"
+                              method="post"
+                              asp-action="CreateUser"
+                              asp-controller="Register"
+                              enctype="multipart/form-data">
+
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label class="text-dark font-weight-bold">Ad</label>
+                                    <input class="form-control form-control-lg" type="text" asp-for="Name" placeholder="Adınız" />
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label class="text-dark font-weight-bold">Soyad</label>
+                                    <input class="form-control form-control-lg" type="text" asp-for="Surname" placeholder="Soyadınız" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="text-dark font-weight-bold">Kullanıcı Adı</label>
+                                <input class="form-control form-control-lg" type="text" asp-for="Username" placeholder="Kullanıcı Adınız" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="text-dark font-weight-bold">Email Adresi</label>
+                                <input class="form-control form-control-lg" type="email" asp-for="Email" placeholder="Email adresiniz" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="text-dark font-weight-bold d-block">Profil Fotoğrafı</label>
+
+                                <div class="text-center mb-2">
+                                    <img id="imagePreview"
+                                         src=""
+                                         alt="Profil Önizleme"
+                                         style="display:none;width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid #e5e7eb;" />
+                                </div>
+
+                                <div class="custom-file custom-file-lg">
+                                    <input type="file"
+                                           class="custom-file-input"
+                                           id="ImageFile"
+                                           asp-for="Image"
+                                           accept="image/*" />
+                                    <label class="custom-file-label" for="ImageFile" id="ImageFileLabel">
+                                        Fotoğraf seçin
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="text-dark font-weight-bold">Parola</label>
+                                <input class="form-control form-control-lg" type="password" asp-for="Password" placeholder="Parolanız" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="text-dark font-weight-bold">Parola Tekrar</label>
+                                <input class="form-control form-control-lg" type="password" asp-for="ConfirmPassword" placeholder="Parolanız tekrar" />
+                            </div>
+
+                            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                            <div class="row form-group text-center">
+                                <div class="col-12">
+                                    <button id="btnRegister" class="btn btn-block btn-lg bg-gradient-primary text-white" type="submit">
+                                        Kayıt Ol
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row form-group mb-0 mt-2">
+                                <div class="col-12 text-center">
+                                    Zaten bir hesabın var mı?
+                                    <a href="/Login/Index" class="text-primary ml-1"><b>Giriş Yap</b></a>
+                                </div>
+                            </div>
+                            <div class="text-danger" asp-validation-summary="All"></div>
+                        </form>
+                        <!-- ✅ REGISTER FORM END -->
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ✅ MODAL: formun DIŞINDA -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:520px;">
+            <div class="modal-content" style="border-radius:20px; overflow:hidden;">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">Doğrulama Kodu</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <div class="font-weight-bold">Mailine gelen 6 haneli kodu gir</div>
+                        <small class="text-muted">@TempData["ConfirmEmail"]</small>
+                    </div>
+
+                    @if (TempData["ConfirmError"] != null)
+                    {
+                        <div class="alert alert-danger text-center">@TempData["ConfirmError"]</div>
+                    }
+
+                    <form method="post" asp-action="ConfirmCode" asp-controller="Register">
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" name="Email" value="@TempData["ConfirmEmail"]" />
+                        <input type="hidden" name="ConfirmCode" id="ConfirmCodeHidden" />
+
+                        <div class="d-flex justify-content-center" style="gap:10px;">
+                            <input class="otp-input" inputmode="numeric" maxlength="1" />
+                            <input class="otp-input" inputmode="numeric" maxlength="1" />
+                            <input class="otp-input" inputmode="numeric" maxlength="1" />
+                            <input class="otp-input" inputmode="numeric" maxlength="1" />
+                            <input class="otp-input" inputmode="numeric" maxlength="1" />
+                            <input class="otp-input" inputmode="numeric" maxlength="1" />
+                        </div>
+
+                        <button class="btn btn-block btn-lg bg-gradient-primary text-white mt-4" type="submit">
+                            Kodu Onayla
+                        </button>
+                        <div class="text-danger" asp-validation-summary="All"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/mendy-admin/package/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/mendy-admin/package/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="~/mendy-admin/package/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        // file preview + file name
+        const fileInput = document.getElementById('ImageFile');
+        const fileLabel = document.getElementById('ImageFileLabel');
+        const previewImg = document.getElementById('imagePreview');
+
+        fileInput?.addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                if (fileLabel) fileLabel.textContent = file.name;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    if (!previewImg) return;
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'inline-block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                if (fileLabel) fileLabel.textContent = "Fotoğraf seçin";
+                if (previewImg) {
+                    previewImg.style.display = 'none';
+                    previewImg.src = "";
+                }
+            }
+        });
+    </script>
+
+    <script>
+        // preloader
+        $(".preloader ").fadeOut();
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Preloader'ı kapat
+            $(".preloader").fadeOut();
+
+            // MODAL TETİKLEYİCİ
+            // TempData'yı güvenli bir şekilde string'e çevirip kontrol ediyoruz
+            var showModal = '@TempData["ShowConfirmModal"]';
+
+            if (showModal === "1") {
+                // Bootstrap modalını aç
+                $('#confirmModal').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $('#confirmModal').modal('show');
+
+                // Modal açıldıktan sonra ilk kutuya odaklan
+                setTimeout(function() {
+                    $('.otp-input').first().focus();
+                }, 500);
+            }
+
+            // OTP GİRİŞ MANTIĞI
+            const otpInputs = $('.otp-input');
+            const hiddenInput = $('#ConfirmCodeHidden');
+
+            otpInputs.on('input', function() {
+                this.value = this.value.replace(/\D/g, '').slice(0, 1);
+                if (this.value.length === 1) {
+                    $(this).next('.otp-input').focus();
+                }
+                updateHiddenCode();
+            });
+
+            otpInputs.on('keydown', function(e) {
+                if (e.key === 'Backspace' && !this.value) {
+                    $(this).prev('.otp-input').focus();
+                }
+            });
+
+            function updateHiddenCode() {
+                let code = "";
+                otpInputs.each(function() {
+                    code += $(this).val();
+                });
+                hiddenInput.val(code);
+            }
+        });
+    </script>
+
+</body>
+</html>
