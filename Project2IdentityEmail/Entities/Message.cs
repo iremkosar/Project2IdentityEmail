@@ -9,5 +9,7 @@
         public string MessageDetail { get; set; }
         public DateTime SendDate { get; set; }
         public bool IsStatus { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }

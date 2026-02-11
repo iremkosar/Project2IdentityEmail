@@ -11,6 +11,7 @@ namespace Project2IdentityEmail.Context
             optionsBuilder.UseSqlServer("Server=DESKTOP-UGIR0F4\\SQLEXPRESS;initial catalog=Project2EmailDb;integrated security=true");
         }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
     }
 }

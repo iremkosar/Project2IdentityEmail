@@ -7,21 +7,21 @@
 
 <div class="container">
     <br /><br />
-    <h3>Gelen Mesaj Listesi</h3>
+    <h3>Gönderilen Mesaj Listesi</h3>
     <table class="table table-hover">
         <tr>
             <th>#</th>
-            <th>Gönderici Email</th>
+            <th>Alıcı Email</th>
             <th>Konu</th>
             <th>Tarih</th>
             <th>Mesajı Aç</th>
             <th>Mesajı Sil</th>
         </tr>
-        @foreach(var item in Model)
+        @foreach (var item in Model)
         {
             <tr>
                 <td>@item.MessageId</td>
-                <td>@item.SenderEmail</td>
+                <td>@item.ReceiverEmail</td>
                 <td>@item.Subject</td>
                 <td>@item.SendDate.ToString("dd-MMM-yyyy")</td>
                 <td><a href="/Message/MessageDetail/@item.MessageId" class="btn btn-info">Mesajı Aç</a></td>
@@ -30,3 +30,4 @@
         }
     </table>
 </div>
+

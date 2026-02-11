@@ -1,0 +1,31 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+@await Component.InvokeAsync("_HeadUserLayoutComponentPartial")
+<body> 
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div> 
+    <div id="main-wrapper">       
+        @await Component.InvokeAsync("_HeaderUserLayoutComponentPartial")     
+        <div class="page-wrapper ml-0">
+          
+            @await Component.InvokeAsync("_BreadCrumbUserLayoutComponentPartial")          
+            <div class="container-fluid">              
+                <div class="email-app">                  
+                    @RenderBody()
+                </div>              
+            </div>          
+        </div>      
+    </div>
+    @await Component.InvokeAsync("_FooterUserLayoutComponentPartial")  
+</body>
+</html>

@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "ComposeMessage";
+    Layout = "~/Views/UserLayout/Index.cshtml";
+}
+
+<div class="left-part bg-white">
+    @await Component.InvokeAsync("_MessageSidebarComponentPartial")
+    <a class="ti-menu ti-close btn btn-success show-left-part d-block d-md-none" href="javascript:void(0)"></a>
+
+</div>
+<div class="right-part mail-compose bg-white">
+    <div class="p-20 border-bottom">
+        <div class="d-flex align-items-center">
+            <div>
+                <h4>Oluştur</h4>
+                <span>Yeni Mesaj Oluştur</span>
+            </div>
+        </div>
+    </div>
+    <!-- Action part -->
+    <!-- Button group part -->
+    <div class="card-body">
+        <form>
+            <div class="form-group">
+                <input type="email" id="example-email" name="example-email" class="form-control"
+                       placeholder="Alıcı Email">
+            </div>
+            <div class="form-group">
+                <input type="text" id="example-subject" name="example-subject" class="form-control"
+                       placeholder="Konu">
+            </div>
+            <div id="summernote"></div>
+           
+            <button type="submit" class="btn btn-success m-t-20">
+                <i class="far fa-envelope"></i>
+               Gönder
+            </button>         
+        </form>
+        <!-- Action part -->
+    </div>
+</div>
+

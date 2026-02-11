@@ -1,0 +1,52 @@
+﻿@model Message
+@{
+    ViewData["Title"] = "MessageDetail";
+    Layout = "~/Views/UserLayout/Index.cshtml";
+}
+
+<div class="left-part bg-white">
+    @await Component.InvokeAsync("_MessageSidebarComponentPartial")
+    <a class="ti-menu ti-close btn btn-success show-left-part d-block d-md-none" href="javascript:void(0)"></a>
+
+</div>
+
+<div class="right-part mail-details bg-white">
+    <div class="card-body">
+        <button type="button" id="back_to_inbox" class="btn btn-outline-secondary font-18 m-r-10">
+            <i class="mdi mdi-arrow-left"></i>
+        </button>
+        <div class="btn-group m-r-10" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-outline-secondary font-18"><i class="mdi mdi-reply"></i></button>
+            <button type="button" class="btn btn-outline-secondary font-18"><i class="mdi mdi-alert-octagon"></i></button>
+            <button type="button" class="btn btn-outline-secondary font-18"><i class="mdi mdi-delete"></i></button>
+        </div>
+    </div>
+    <div class="card-body border-top border-bottom bg-light">
+        <h4 class="m-b-0">Mesaj Detayları</h4>
+    </div>
+    <div class="card-body border-bottom">
+        <div class="d-flex no-block align-items-center m-b-40">
+            <div class="m-r-10">
+                <img src="~/mendy-admin/package/assets/images/users/1.jpg" alt="user" class="rounded-circle"
+                     width="45">
+            </div>
+            <div class="">
+                <h5 class="m-b-0 font-16 font-medium">Gönderen: <small> ( @Model.SenderEmail )</small></h5><span>
+                    to
+                    @Model.ReceiverEmail
+                </span>
+            </div>         
+        </div>
+        <h4 class="m-b-15">Hey Hi,</h4>       
+        <p>
+           @Model.MessageDetail
+        </p>
+    </div>
+    <div class="card-body">
+      
+        <div class="border m-t-20 p-15">
+            <p class="p-b-20">Buraya Tıklayın <a href="javascript:void(0)">Yanıtla</a> veya <a href="javascript:void(0)">İlet</a></p>
+        </div>
+    </div>
+</div>
+

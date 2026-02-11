@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+@await Component.InvokeAsync("Head")
+
+<body>
+    <div id="main-wrapper">
+        @await Component.InvokeAsync("Topbar")
+
+        <div class="page-wrapper">
+            @await Component.InvokeAsync("Breadcrumb")
+
+            <div class="container-fluid">
+                <div class="email-app">
+                    @await Component.InvokeAsync("Sidebar")
+
+                    <div class="right-part mail-details bg-white">
+                        @RenderBody()
+                    </div>
+                </div>
+
+            </div>
+
+            @await Component.InvokeAsync("Footer")
+        </div>
+    </div>
+</body>
+</html>

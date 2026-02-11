@@ -1,0 +1,41 @@
+﻿<div class="scrollable" style="height:100%;">
+    <div class="p-15">
+        <a id="compose_mail" class="waves-effect waves-light btn btn-danger d-block" href="javascript: void(0)">Yeni Mesaj</a>
+    </div>
+    <div class="divider"></div>
+    <ul class="list-group">
+        <li>
+            <small class="p-15 grey-text text-lighten-1 db">Folders</small>
+        </li>
+        <li class="list-group-item">
+            <a href="javascript:void(0)" class="active list-group-item-action">
+                <i class="mdi mdi-inbox"></i>
+                Gelen Kutusu <span class="label label-success float-right">6</span>
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="javascript:void(0)" class="list-group-item-action">
+                <i class="mdi mdi-star"></i>
+                Yıldızlananlar
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="javascript:void(0)" class="list-group-item-action">
+                <i class="mdi mdi-send"></i>
+                Taslaklar <span class="label label-danger float-right">3</span>
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="javascript:void(0)" class="list-group-item-action">
+                <i class="mdi mdi-email"></i>
+                Giden Kutusu
+            </a>
+        </li>
+        <li class="list-group-item">
+            <hr>
+        </li>
+        @await Component.InvokeAsync("_MessageCategoryListSideBarComponentPartial")
+       
+        
+    </ul>
+</div>
