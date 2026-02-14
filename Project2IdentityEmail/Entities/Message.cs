@@ -11,5 +11,9 @@
         public bool IsStatus { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+        public bool IsStarred { get; set; }      // yıldızlandı mı?
+        public bool IsDraft { get; set; }        // taslak mı?
+        public bool IsDeleted { get; set; }      // çöpte mi? (soft delete)
+     
     }
 }

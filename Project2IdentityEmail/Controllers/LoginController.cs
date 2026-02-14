@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Project2IdentityEmail.Context;
 using Project2IdentityEmail.Dtos;
 using Project2IdentityEmail.Entities;
 
@@ -8,7 +9,7 @@ namespace Project2IdentityEmail.Controllers
     public class LoginController : Controller
     {
         private readonly SignInManager<AppUser> _signInManager;
-
+       
         public LoginController(SignInManager<AppUser> signInManager)
         {
             _signInManager = signInManager;
@@ -22,10 +23,13 @@ namespace Project2IdentityEmail.Controllers
         public async Task<IActionResult> UserLogin(LoginUserDto loginUserDto)
         {
             var result = await _signInManager.PasswordSignInAsync(loginUserDto.Username,loginUserDto.Password,false,false);
+           
             if(result.Succeeded)
             {
-                return RedirectToAction("UserProfile", "Profile");
+             
+                return RedirectToAction("Inbox", "MessageController1");
             }
+       
             return View();
         }
     }

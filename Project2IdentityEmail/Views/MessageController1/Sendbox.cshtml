@@ -47,7 +47,32 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr class="">
+                    string labelClass = "label-info";
+
+                    switch (item.Category.CategoryName)
+                    {
+                        case "İş":
+                            labelClass = "label-primary";
+                            break;
+
+                        case "Aile":
+                            labelClass = "label-success";
+                            break;
+
+                        case "Sosyal":
+                            labelClass = "label-warning";
+                            break;
+
+                        case "Eğitim":
+                            labelClass = "label-purple";
+                            break;
+
+                        default:
+                            labelClass = "label-secondary";
+                            break;
+                    }
+                    <tr style="cursor:pointer;"
+                        onclick="window.location.href='@Url.Action("MessageDetail","MessageController1", new { id = item.MessageId })'">
                         <!-- label -->
                         <td class="chb">
                             <div class="custom-control custom-checkbox">
@@ -58,10 +83,10 @@
                         <!-- star -->
                         <td class="starred"><i class="far fa-star"></i></td>
                         <!-- User -->
-                        <td class="user-image">
-                            <img src="~/mendy-admin/package/assets/images/users/4.jpg" alt="user"
-                                 class="rounded-circle" width="30">
-                        </td>
+                        @* <td class="user-image"> *@
+                        @*     <img src="~/mendy-admin/package/assets/images/users/4.jpg" alt="user" *@
+                        @*          class="rounded-circle" width="30"> *@
+                        @* </td> *@
                         <td class="user-name">
                             <h6 class="m-b-0">Alıcı</h6>
                         </td>
@@ -70,12 +95,14 @@
                         </td>
                         <!-- Message -->
                         <td class="max-texts">
-                            <a class="link" href="javascript: void(0)">
-                                <span class="label label-info m-r-10">@item.CategoryId</span>
-                                @item.MessageDetail
-
+                            <a class="link" href="/MessageController1/MessageDetail/@item.MessageId">
+                                <span class="label @labelClass m-r-10">
+                                    @item.Category.CategoryName
+                                </span>
+                                @Html.Raw(item.MessageDetail)
                             </a>
                         </td>
+
                         <!-- Attachment -->
                         <td class="clip"><i class="fa fa-paperclip"></i></td>
                         <!-- Time -->

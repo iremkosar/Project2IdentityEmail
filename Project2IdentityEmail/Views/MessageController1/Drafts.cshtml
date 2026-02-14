@@ -1,6 +1,6 @@
 ﻿@model List<Message>
 @{
-    ViewData["Title"] = "Inbox";
+    ViewData["Title"] = "Drafts";
     Layout = "~/Views/UserLayout/Index.cshtml";
 }
 
@@ -10,7 +10,7 @@
 </div>
 
 <div class="right-part mail-list bg-white">
-   
+    <!-- Button group part -->
     <div class="p-15 d-flex align-items-center do-block">
         <div class="btn-group my-1">
             <div class="custom-control custom-checkbox">
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-  
+    <!-- Mail list-->
     <div class="table-responsive">
         <table class="table email-table no-wrap table-hover v-middle">
             <tbody>
@@ -71,7 +71,7 @@
                         style="cursor:pointer;"
                         onclick="window.location.href='@Url.Action("MessageDetail","MessageController1", new { id = item.MessageId })'">
 
-                       
+                        <!-- checkbox -->
                         <td class="chb">
                             <div class="custom-control custom-checkbox" onclick="event.stopPropagation();">
                                 <input type="checkbox" class="custom-control-input" id="cst_@item.MessageId">
@@ -79,7 +79,7 @@
                             </div>
                         </td>
 
-                       
+                        <!-- ⭐ STAR (tıklayınca satıra gitmesin) -->
                         <td class="starred">
                             <a href="javascript:void(0)"
                                class="js-star"
@@ -90,7 +90,7 @@
                             </a>
                         </td>
 
-                       
+                        <!-- User -->
                         @* <td class="user-image"> *@
                         @*     <img src="~/mendy-admin/package/assets/images/users/4.jpg" alt="user" *@
                         @*          class="rounded-circle" width="30"> *@
@@ -104,7 +104,7 @@
                             <h6 class="m-b-0">@item.SenderEmail</h6>
                         </td>
 
-                      
+                        <!-- Message -->
                         <td class="max-texts">
                             <a class="link"
                                asp-controller="MessageController1"
@@ -118,9 +118,8 @@
                             </a>
                         </td>
 
-                      
 
-                       
+                        <!-- 🧾 Taslak + 🗑️ Çöp ikonları -->
                         <td class="mail-actions text-right" onclick="event.stopPropagation();">
                             <a href="javascript:void(0)"
                                class="js-draft mr-2"
@@ -137,7 +136,7 @@
                             </a>
                         </td>
 
-                      
+                        <!-- Time -->
                         <td class="time">
                             @item.SendDate.ToShortDateString()
                         </td>
@@ -152,7 +151,7 @@
             font-weight: 700;
         }
 
-      
+        /* ikonları hizalı ve şık göster */
         .mail-actions a {
             color: inherit;
         }
@@ -160,32 +159,6 @@
             .mail-actions a:hover {
                 opacity: .8;
             }
-      
-        .mail-actions i {
-            font-size: 18px; 
-            transition: .15s ease-in-out;
-        }
-
-       
-        .js-draft i {
-            color: #17a2b8; 
-        }
-
-        .js-draft:hover i {
-            color: #0d6efd;
-            transform: scale(1.2);
-        }
-
-        /* 🗑 Çöp */
-        .js-trash i {
-            color: #dc3545; 
-        }
-
-        .js-trash:hover i {
-            color: #ff0033;
-            transform: scale(1.2);
-        }
-
     </style>
 </div>
 
@@ -236,22 +209,24 @@
 
     // 🗑️ TRASH
     document.querySelectorAll(".js-trash").forEach(el => {
-         el.addEventListener("click", async (e) => {
-             e.preventDefault();
-             e.stopPropagation();
+        el.addEventListener("click", async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
 
-             const ok = confirm("Bu mesajı Çöp Kutusu'na taşımak istiyor musunuz?");
-             if (!ok) return; // ❌ iptal
+            const id = el.getAttribute("data-id");
+            const data = await postJson(`/MessageController1/ToggleTrash?id=${id}`);
 
-             const id = el.getAttribute("data-id");
-             const data = await postJson(`/MessageController1/ToggleTrash?id=${id}`);
-
-             if (data && data.ok) {
-                 if (data.deleted) {
-                     const row = el.closest("tr");
-                     if (row) row.remove();
+            if (data && data.ok) {
+                // Çöpe attıysa inbox’tan kaldır
+                if (data.deleted) {
+                    const row = el.closest("tr");
+                    if (row) row.remove();
                 }
             }
         });
     });
 </script>
+
+
+
+

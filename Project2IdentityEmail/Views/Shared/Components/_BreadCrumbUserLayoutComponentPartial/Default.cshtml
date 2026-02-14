@@ -4,20 +4,21 @@
             <div class="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="#" class="link">Home</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">Email</li>
-                    </ol>
+                        <li class="breadcrumb-item"><a href="/Dashboard/Index" class="link">Home</a></li>
+                        <li class="breadcrumb-item active">@ViewBag.Breadcrumb</li>
+                    </ol>                 
                 </nav>
-            </div>
-            <h4 class="page-title">Email</h4>
+            </div>         
         </div>
         <div class="col-5 align-self-center text-right">
-            <ul class="list-inline mb-0">
-                <li class="list-inline-item"><i data-feather="refresh-cw"></i></li>
-                <li class="list-inline-item"><i data-feather="settings"></i></li>
-            </ul>
+            @if ((ViewBag.PageTitle?.ToString() == "Profilim") || (ViewBag.PageTitle?.ToString() == "Dashboard"))
+            {
+                <a href="/MessageController1/Inbox" class="btn btn-sm btn-primary">
+                    <i class="mdi mdi-home mr-1"></i>
+                    Ana Sayfaya Dön
+                </a>
+            }
         </div>
+
     </div>
 </div>

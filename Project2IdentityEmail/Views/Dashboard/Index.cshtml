@@ -1,0 +1,357 @@
+﻿@model Project2IdentityEmail.Dtos.DashboardDto
+@using System.Text.RegularExpressions
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/UserLayout/Index.cshtml";
+
+    string CleanHtml(string? html)
+    {
+        if (string.IsNullOrWhiteSpace(html)) return "-";
+        // tagleri sil
+        var text = Regex.Replace(html, "<.*?>", string.Empty);
+        // &nbsp; gibi entityleri düzelt
+        text = System.Net.WebUtility.HtmlDecode(text);
+        // gereksiz boşluk
+        text = Regex.Replace(text, @"\s+", " ").Trim();
+        return string.IsNullOrWhiteSpace(text) ? "-" : text;
+    }
+
+    // Donut için hesaplar
+    var totalReadUnread = (Model.ReadMessages + Model.UnreadMessages);
+    var readPercent = totalReadUnread == 0 ? 0 : (int)Math.Round((Model.ReadMessages * 100.0) / totalReadUnread);
+
+    // SVG circle hesabı (r=70 => çevre ~ 439.82)
+    var circumference = 2 * Math.PI * 70;
+    var dashOffset = circumference * (1 - (readPercent / 100.0));
+
+    // Kategori bar yüzdeleri (InboxCount'a göre)
+    var baseCount = Model.InboxCount == 0 ? 1 : Model.InboxCount;
+}
+
+<!-- Tailwind + iconlar (Layout’ta yoksa burada dursun) -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#f4258c",
+                    "background-light": "#f8f5f7",
+                    "background-dark": "#221019",
+                },
+                fontFamily: { "display": ["Manrope", "sans-serif"] },
+                borderRadius: {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+                },
+            },
+        },
+    }
+</script>
+
+<style>
+    body {
+        font-family: 'Manrope', sans-serif;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #f4258c44;
+        border-radius: 10px;
+    }
+</style>
+
+<!-- ✅ Layout uyumu için container-fluid içine aldık -->
+
+<div class="p-4 md:p-8 bg-background-light dark:bg-background-dark">
+
+        <!-- ✅ Background + text -->
+        <div class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 min-h-screen font-display rounded-xl">
+
+            <!-- Stats Cards Row -->
+            <section class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+                <!-- Card 1: Total Messages -->
+                <div class="bg-primary p-6 rounded-xl shadow-xl shadow-primary/20 text-white relative overflow-hidden group">
+                    <div class="relative z-10">
+                        <p class="text-white/70 text-sm font-medium">Toplam Mesaj</p>
+                        <h3 class="text-3xl font-bold mt-1">@Model.TotalMessages</h3>
+                        <div class="mt-4 flex items-center text-xs bg-white/20 w-fit px-2 py-1 rounded-full">
+                            <span class="material-icons text-xs mr-1">mail</span> Genel Mesaj Trafiği
+                        </div>
+                    </div>
+                    <span class="material-icons absolute -right-4 -bottom-4 text-white/10 text-9xl group-hover:scale-110 transition-transform">mail</span>
+                </div>
+
+                <!-- Card 2: Inbox -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-lg flex items-center justify-center">
+                            <span class="material-icons">inbox</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm">Gelen Kutusu</p>
+                    <h3 class="text-2xl font-bold">@Model.InboxCount</h3>
+                </div>
+
+                <!-- Card 3: Unread -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-lg flex items-center justify-center">
+                            <span class="material-icons">mark_email_unread</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm">Okunmamış Mesaj</p>
+                    <h3 class="text-2xl font-bold">@Model.UnreadMessages</h3>
+                </div>
+
+                <!-- Card 4: Users -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded-lg flex items-center justify-center">
+                            <span class="material-icons">group</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm">Kullanıcı</p>
+                    <h3 class="text-2xl font-bold">@Model.TotalUsers</h3>
+                </div>
+
+                <!-- Card 5: Categories -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="w-10 h-10 bg-teal-100 dark:bg-teal-900/30 text-teal-600 rounded-lg flex items-center justify-center">
+                            <span class="material-icons">category</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm">Kategori</p>
+                    <h3 class="text-2xl font-bold">@Model.TotalCategories</h3>
+                </div>
+            </section>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-12 gap-8">
+
+                <!-- Left: Profile -->
+                <aside class="col-span-12 lg:col-span-3">
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 p-6 lg:sticky lg:top-8">
+                        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                            <span class="material-icons text-primary">account_circle</span> Profilim
+                        </h2>
+
+                        <div class="flex flex-col items-center text-center mb-6">
+                            <div class="relative group cursor-pointer mb-4">
+                                <img class="w-24 h-24 rounded-full border-4 border-primary/20 object-cover"
+                                     src="~/images/@(string.IsNullOrWhiteSpace(Model.ImageUrl) ? "default.png" : Model.ImageUrl)" />
+                                <div class="absolute inset-0 bg-primary/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                    <span class="material-icons text-white">edit</span>
+                                </div>
+                            </div>
+
+                            <h4 class="font-bold text-lg">@Model.UserName</h4>
+                            <p class="text-sm text-slate-500">@Model.Email</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Email Adres</label>
+                                <input class="w-full bg-background-light dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary"
+                                       type="text" value="@Model.Email" readonly />
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Kullanıcı Adı</label>
+                                <input class="w-full bg-background-light dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary"
+                                       type="text" value="@Model.UserName" readonly />
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Hakkımda</label>
+                                <textarea class="w-full bg-background-light dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary custom-scrollbar resize-none"
+                                          rows="4" readonly>@(string.IsNullOrWhiteSpace(Model.About) ? "Henüz about bilgisi girilmedi." : Model.About)</textarea>
+                            </div>
+
+                            <button type="button"
+                                    class="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">
+                                Değişiklikleri Kaydet
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Center: Recent Messages -->
+                <section class="col-span-12 lg:col-span-6">
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 overflow-hidden shadow-sm">
+                        <div class="p-6 border-b border-primary/10 flex justify-between items-center bg-primary/5">
+                            <h2 class="text-xl font-bold">Son Mesajlar</h2>
+                            <a href="/MessageController1/Inbox" class="text-primary text-sm font-bold flex items-center hover:underline">
+                                Tüm Mesajları Gör <span class="material-icons text-sm ml-1">arrow_forward</span>
+                            </a>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="text-xs uppercase font-bold text-slate-400 bg-slate-50 dark:bg-slate-800/50">
+                                        <th class="px-6 py-4">Gönderen &amp; Konu</th>
+                                        <th class="px-6 py-4">Tarih</th>
+                                        <th class="px-6 py-4">Durum</th>
+                                        <th class="px-6 py-4">Mesaj</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="divide-y divide-primary/10">
+                                    @if (Model.LastMessages != null && Model.LastMessages.Any())
+                                    {
+                                        foreach (var m in Model.LastMessages)
+                                        {
+                                            <tr class="hover:bg-primary/5 transition-colors cursor-pointer"
+                                                onclick="location.href='@Url.Action("MessageDetail","MessageController1", new { id = m.MessageId })'">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                    @if (!string.IsNullOrWhiteSpace(m.SenderImageUrl))
+                                                    {
+                                                        <img class="w-8 h-8 rounded-full object-cover border border-primary/20"
+                                                             src="~/images/@m.SenderImageUrl"
+                                                             alt="sender" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs font-bold">
+                                                            @(string.IsNullOrWhiteSpace(m.SenderEmail) ? "?" : m.SenderEmail.Substring(0, 1).ToUpper())
+                                                        </div>
+                                                    }
+
+                                                        <div>
+                                                            <p class="font-bold text-sm">@m.SenderEmail</p>
+                                                            <p class="text-xs text-primary font-medium">@m.Subject</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <td class="px-6 py-4 text-xs font-medium text-slate-500">
+                                                    @m.SendDate.ToString("dd.MM.yyyy")
+                                                </td>
+
+                                                <td class="px-6 py-4">
+                                                    @if (m.IsStatus)
+                                                    {
+                                                        <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">Okundu</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-yellow-100 text-yellow-700">Okunmadı</span>
+                                                    }
+                                                </td>
+
+                                                <td class="px-6 py-4">
+                                                <p class="text-xs text-slate-500 truncate w-44">
+                                                    @CleanHtml(m.MessageDetail)
+                                                </p>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td class="px-6 py-6 text-sm text-slate-500" colspan="4">
+                                                Henüz mesaj yok.
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right: Charts -->
+                <section class="col-span-12 lg:col-span-3 space-y-8">
+
+                    <!-- Donut -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 p-6 shadow-sm">
+                        <h2 class="text-lg font-bold mb-4">Okundu vs Okunmadı</h2>
+
+                        <div class="flex justify-center items-center py-6 relative">
+                            <svg class="w-40 h-40 transform -rotate-90">
+                                <circle class="text-slate-100 dark:text-slate-800"
+                                        cx="80" cy="80" fill="transparent" r="70"
+                                        stroke="currentColor" stroke-width="15"></circle>
+
+                                <circle class="text-primary"
+                                        cx="80" cy="80" fill="transparent" r="70"
+                                        stroke="currentColor" stroke-width="15"
+                                        stroke-dasharray="@circumference"
+                                        stroke-dashoffset="@dashOffset"
+                                        stroke-linecap="round"></circle>
+                            </svg>
+
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span class="text-2xl font-bold">@readPercent%</span>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Okundu</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between mt-4">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-primary"></div>
+                                <span class="text-xs text-slate-500">Okundu (@Model.ReadMessages)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                                <span class="text-xs text-slate-500">Okunmadı (@Model.UnreadMessages)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category bars -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 p-6 shadow-sm">
+                        <h2 class="text-lg font-bold mb-4">Kategori Sayısı</h2>
+
+                        <div class="space-y-4">
+                            @if (Model.CategoryStats != null && Model.CategoryStats.Any())
+                            {
+                                foreach (var c in Model.CategoryStats.Take(6))
+                                {
+                                    var pct = (int)Math.Round((c.Count * 100.0) / baseCount);
+                                    <div class="space-y-1">
+                                        <div class="flex justify-between text-xs">
+                                            <span class="font-medium">@c.CategoryName</span>
+                                            <span class="text-slate-400">@pct%</span>
+                                        </div>
+                                        <div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                            <div class="h-full bg-primary rounded-full" style="width:@pct%"></div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="text-sm text-slate-500">Kategori verisi yok.</div>
+                            }
+                        </div>
+
+                        <button type="button"
+                                class="w-full mt-6 py-2 border border-primary/20 text-primary text-xs font-bold rounded-lg hover:bg-primary hover:text-white transition-all">
+                            Rapor Oluştur
+                        </button>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+    </div>
+

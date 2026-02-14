@@ -1,4 +1,4 @@
-﻿
+﻿@model Project2IdentityEmail.Dtos.MailRequestDto
 @{
     ViewData["Title"] = "ComposeMessage";
     Layout = "~/Views/UserLayout/Index.cshtml";
@@ -7,8 +7,8 @@
 <div class="left-part bg-white">
     @await Component.InvokeAsync("_MessageSidebarComponentPartial")
     <a class="ti-menu ti-close btn btn-success show-left-part d-block d-md-none" href="javascript:void(0)"></a>
-
 </div>
+
 <div class="right-part mail-compose bg-white">
     <div class="p-20 border-bottom">
         <div class="d-flex align-items-center">
@@ -18,26 +18,45 @@
             </div>
         </div>
     </div>
-    <!-- Action part -->
-    <!-- Button group part -->
+
     <div class="card-body">
-        <form>
+        <form method="post" asp-action="ComposeMessage" asp-controller="MessageController1">
             <div class="form-group">
-                <input type="email" id="example-email" name="example-email" class="form-control"
-                       placeholder="Alıcı Email">
+                <input type="email" asp-for="ReceiverEmail" class="form-control" placeholder="Alıcı Email">
+                <span asp-validation-for="ReceiverEmail" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="text" asp-for="Subject" class="form-control" placeholder="Konu">
+                <span asp-validation-for="Subject" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="text" id="example-subject" name="example-subject" class="form-control"
-                       placeholder="Konu">
+                <select asp-for="CategoryId" class="form-control">
+                    <option value="">Kategori Seçiniz</option>
+
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category.CategoryId">
+                            @category.CategoryName
+                        </option>
+                    }
+                </select>
             </div>
-            <div id="summernote"></div>
-           
+
+
+            <div class="form-group">
+                <textarea asp-for="MessageDetail" id="summernote" class="form-control"></textarea>
+                <span asp-validation-for="MessageDetail" class="text-danger"></span>
+            </div>
+
             <button type="submit" class="btn btn-success m-t-20">
-                <i class="far fa-envelope"></i>
-               Gönder
-            </button>         
+                <i class="far fa-envelope"></i> Gönder
+            </button>
         </form>
-        <!-- Action part -->
     </div>
 </div>
+
+
+
+
 

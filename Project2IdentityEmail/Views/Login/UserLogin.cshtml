@@ -3,20 +3,107 @@
     Layout = null;
 }
 
-<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<!DOCTYPE html>
+<html dir="ltr">
 
-<form method="post">
-    <div class="container">
-        <br /><br />
-        <h3>Giriş Sayfası</h3>
-        <br />       
-        <label>Kullanıcı Adınız</label>
-        <input type="text" required asp-for="Username" class="form-control" />
-        <br />      
-        <label>Şifreniz</label>
-        <input type="text" required asp-for="Password" class="form-control" />
-        <br />   
-        <button class="btn btn-info">Giriş Yap</button>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="~/mendy-admin/package/assets/images/favicon.png">
+    <title>Login</title>
+
+    <link href="~/mendy-admin/package/dist/css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main-wrapper">
+
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center"
+             style="background: url('@Url.Content("~/mendy-admin/package/assets/images/big/auth-bg.jpg")') no-repeat center center; background-size: cover;">
+
+            <div class="auth-box">
+                <div id="loginform">
+                    <div class="logo text-center">
+                        <span class="db">
+                            <img src="~/mendy-admin/package/assets/images/logo-icon.png" alt="logo" />
+                        </span>
+                        <h5 class="font-medium m-b-20">Giriş Yap</h5>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+
+                            <form asp-controller="Login"
+                                  asp-action="UserLogin"
+                                  method="post"
+                                  class="form-horizontal mt-3">
+
+                                @Html.AntiForgeryToken()
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="ti-user"></i>
+                                        </span>
+                                    </div>
+
+                                    <input asp-for="Username"
+                                           class="form-control form-control-lg"
+                                           placeholder="Kullanıcı Adı" />
+
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="ti-lock"></i>
+                                        </span>
+                                    </div>
+
+                                    <input asp-for="Password"
+                                           type="password"
+                                           class="form-control form-control-lg"
+                                           placeholder="Şifre" />
+
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <button class="btn btn-block btn-lg bg-gradient-primary text-white" type="submit">
+                                        Giriş Yap
+                                    </button>
+                                </div>
+
+                                @if (ViewBag.Error != null)
+                                {
+                                    <div class="alert alert-danger mt-2 text-center">
+                                        @ViewBag.Error
+                                    </div>
+                                }
+
+                                <div class="text-center m-t-10">
+                                    Hesabın yok mu?
+                                    <a href="/Register/CreateUser" class="text-info">
+                                        <b>Kayıt Ol</b>
+                                    </a>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-</form>
 
+    <script src="~/mendy-admin/package/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/mendy-admin/package/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="~/mendy-admin/package/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>

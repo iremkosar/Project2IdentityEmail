@@ -172,6 +172,25 @@
                                 <label class="text-dark font-weight-bold">Parola Tekrar</label>
                                 <input class="form-control form-control-lg" type="password" asp-for="ConfirmPassword" placeholder="Parolanız tekrar" />
                             </div>
+                            <div class="form-group mt-2">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox"
+                                           class="custom-control-input"
+                                           id="acceptTerms"
+                                           required />
+                                    <label class="custom-control-label" for="acceptTerms">
+                                        <a href="#" data-toggle="modal" data-target="#termsModal" class="text-primary">
+                                            Kullanım Sözleşmesini
+                                        </a>
+                                        ve
+                                        <a href="#" data-toggle="modal" data-target="#privacyModal" class="text-primary">
+                                            KVKK Aydınlatma Metnini
+                                        </a>
+                                        okudum ve kabul ediyorum.
+                                    </label>
+                                </div>
+                            </div>
+
 
                             <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 
@@ -186,7 +205,7 @@
                             <div class="row form-group mb-0 mt-2">
                                 <div class="col-12 text-center">
                                     Zaten bir hesabın var mı?
-                                    <a href="/Login/Index" class="text-primary ml-1"><b>Giriş Yap</b></a>
+                                    <a href="/Login/UserLogin" class="text-primary ml-1"><b>Giriş Yap</b></a>
                                 </div>
                             </div>
                             <div class="text-danger" asp-validation-summary="All"></div>
@@ -278,28 +297,27 @@
     </script>
 
     <script>
-        // preloader
+      
         $(".preloader ").fadeOut();
     </script>
 
     <script>
         $(document).ready(function () {
-            // Preloader'ı kapat
+           
             $(".preloader").fadeOut();
 
-            // MODAL TETİKLEYİCİ
-            // TempData'yı güvenli bir şekilde string'e çevirip kontrol ediyoruz
+            
             var showModal = '@TempData["ShowConfirmModal"]';
 
             if (showModal === "1") {
-                // Bootstrap modalını aç
+               
                 $('#confirmModal').modal({
                     backdrop: 'static',
                     keyboard: false
                 });
                 $('#confirmModal').modal('show');
 
-                // Modal açıldıktan sonra ilk kutuya odaklan
+             
                 setTimeout(function() {
                     $('.otp-input').first().focus();
                 }, 500);
@@ -332,6 +350,63 @@
             }
         });
     </script>
+    <div class="modal fade" id="termsModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="border-radius:20px;">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">Kullanım Sözleşmesi</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="max-height:400px; overflow-y:auto;">
+                    <p><strong>1. Hizmet Tanımı</strong></p>
+                    <p>Bu platform kullanıcıların mesajlaşma ve iletişim hizmetlerini sağlamaktadır.</p>
+
+                    <p><strong>2. Kullanıcı Yükümlülükleri</strong></p>
+                    <p>Kullanıcılar sisteme doğru bilgi girmekle ve hesabını güvenli tutmakla yükümlüdür.</p>
+
+                    <p><strong>3. Yasaklı Davranışlar</strong></p>
+                    <p>Spam, kötüye kullanım, yasa dışı içerik paylaşımı yasaktır.</p>
+
+                    <p><strong>4. Sorumluluk Reddi</strong></p>
+                    <p>Sistem teknik aksaklıklardan sorumlu tutulamaz.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">Anladım</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="privacyModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="border-radius:20px;">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">KVKK Aydınlatma Metni</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="max-height:400px; overflow-y:auto;">
+                    <p><strong>Veri Sorumlusu</strong></p>
+                    <p>Platform, 6698 sayılı KVKK kapsamında veri sorumlusu sıfatıyla hareket eder.</p>
+
+                    <p><strong>Toplanan Veriler</strong></p>
+                    <p>Ad, soyad, email, kullanıcı adı ve profil fotoğrafı.</p>
+
+                    <p><strong>Veri İşleme Amacı</strong></p>
+                    <p>Kullanıcı hesabı oluşturma ve hizmet sunma.</p>
+
+                    <p><strong>Haklarınız</strong></p>
+                    <p>KVKK 11. madde kapsamında veri silme, düzeltme ve bilgi talep etme hakkınız vardır.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">Anladım</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </body>
 </html>
