@@ -41,7 +41,7 @@ namespace Project2IdentityEmail.Controllers
 
             using var client = new SmtpClient();
             client.Connect("smtp.gmail.com", 587, false);
-            client.Authenticate("iremkosar97@gmail.com", "ukky vjjj jofu hefr");
+            client.Authenticate("iremkosar97@gmail.com", "");
             client.Send(mimeMessage);
             client.Disconnect(true);
 
@@ -81,7 +81,7 @@ namespace Project2IdentityEmail.Controllers
 
         //    SmtpClient client = new SmtpClient();
         //    client.Connect("smtp.gmail.com", 587, false);
-        //    client.Authenticate("iremkosar97@gmail.com", "ukky vjjj jofu hefr");
+        //    client.Authenticate("iremkosar97@gmail.com", "");
         //    client.Send(mimeMessage);
         //    client.Disconnect(true);
 
